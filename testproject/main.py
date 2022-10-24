@@ -38,10 +38,10 @@ if __name__ == "__main__":
 
 
             print("The average hip fluctuation is ", differenceHipsAverage) #better if smaller.
-            print("The average shoulder fluctuation is ", differenceShouldersAverage) #better if bigger. But if subject is stuck on one side, the average is big even thought the gait cycle is bad
+            print("The average shoulder fluctuation is ", differenceShouldersAverage) #better if bigger. But if subject is stuck on one side, the average is big even though the gait cycle is bad
 
             #To solve shoulder fluctuation problem with being stuck on one side, we should be able to detect in which phase of the gait cycle the subject is in each frame.
-            #In order to determine phase of gait cycle, we have to no the neutral position (standing neutral position) and the corresponding bones positions.
+            #In order to determine phase of gait cycle, we have to know the neutral position (standing neutral position) and the corresponding bones positions.
             #From there, we should be able to detect in which phase the subject is in each frame.
 
             mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
