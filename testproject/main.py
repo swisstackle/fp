@@ -16,20 +16,33 @@ if __name__ == "__main__":
             image.flags.writeable = True
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
+            differenceHipsList = []
+            differenceShouldersList = []
             try:
                 landmarks = results.pose_landmarks.landmark
                 leftshoulder = landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value]
                 rightshoulder = landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value]
-                difference = rightshoulder.z - leftshoulder.z
-                if(np.absolute(difference) > 0.4):
-                    print(" Shoulder Tilted")
-                else:
-                    print("Shoulder Not Tilted")
-
-               #print('{0:.16f}'.format(rightshoulder.x - leftshoulder.x))
+                differenceShoulders = np.absolute(rightshoulder.z - leftshoulder.z)
+                righthip = landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value]
+                lefthip = landmarks[mp_pose.PoseLandmark.LEFT_HIP.value]
+                differenceHips = np.absolute(righthip.z - lefthip.z)
+                differenceHipsList.append(differenceHips)
+                differenceShouldersList.append(differenceShoulders)
 
             except:
                 pass
+
+            differenceHipsAverage = np.mean(differenceHipsList)
+            differenceShouldersAverage = np.mean(differenceShouldersList)
+
+
+
+            print("The average hip fluctuation is ", differenceHipsAverage) #better if smaller.
+            print("The average shoulder fluctuation is ", differenceShouldersAverage) #better if bigger. But if subject is stuck on one side, the average is big even thought the gait cycle is bad
+
+            #To solve shoulder fluctuation problem with being stuck on one side, we should be able to detect in which phase of the gait cycle the subject is in each frame.
+            #In order to determine phase of gait cycle, we have to no the neutral position (standing neutral position) and the corresponding bones positions.
+            #From there, we should be able to detect in which phase the subject is in each frame.
 
             mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
                                       mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
