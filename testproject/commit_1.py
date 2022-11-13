@@ -14,7 +14,7 @@ if __name__ == "__main__":
     mp_drawing = mp.solutions.drawing_utils
     mp_drawing_styles = mp.solutions.drawing_styles
     mp_pose = mp.solutions.pose
-    cap = cv2.VideoCapture('F_CP1_Subject_1.mp4')
+    cap = cv2.VideoCapture('naudi.mp4')
     # used to record the time when we processed last frame
     prev_frame_time = 0
  
@@ -82,21 +82,14 @@ if __name__ == "__main__":
 
             differenceHipsAverage = np.mean(differenceHipsList)
             differenceShouldersAverage = np.mean(differenceShouldersList)
-            
+
             slope_shoulder=np.arctan((leftshoulderList[0][1]-rightshoulderList[0][1])/(leftshoulderList[0][0]-rightshoulderList[0][0]))
+            print(slope_shoulder)
             slope_hip=np.arctan((lefthipList[0][1]-righthipList[0][1])/(lefthipList[0][0]-righthipList[0][0]))
             rate_slope_shoulder = slope_shoulder*fps
             rate_slope_shoulder_length = differenceShouldersAverage*fps
             
-                        
 
-
-            #print("The average hip fluctuation is ", differenceHipsAverage) #better if smaller.
-            #print("The average shoulder fluctuation is ", differenceShouldersAverage) #better if bigger. But if subject is stuck on one side, the average is big even though the gait cycle is bad
-
-            
-            
-            #print(leftshoulderList) #better if smaller.
             
             
             #To solve shoulder fluctuation problem with being stuck on one side, we should be able to detect in which phase of the gait cycle the subject is in each frame.
